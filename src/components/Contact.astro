@@ -1,0 +1,81 @@
+---
+import Value from './Value.astro';
+import { site } from '../content/site';
+import type { Dictionary } from '../i18n';
+
+interface Props {
+  t: Dictionary;
+}
+
+const { t } = Astro.props;
+const { phone, telegram, email } = site.contact;
+
+const rows = [
+  {
+    label: t.contact.phone,
+    value: phone,
+    href: phone ? `tel:${phone.replace(/[^\d+]/g, '')}` : undefined,
+  },
+  {
+    label: t.contact.telegram,
+    value: telegram ? `@${telegram}` : null,
+    href: telegram ? `https://t.me/${telegram}` : undefined,
+  },
+  {
+    label: t.contact.email,
+    value: email,
+    href: email ? `mailto:${email}` : undefined,
+  },
+  { label: t.contact.address, value: t.contact.addressValue },
+  { label: t.contact.hours, value: t.contact.hoursValue },
+];
+---
+
+<section class="section contact" id="contact" aria-labelledby="contact-title">
+  <div class="wrap section__grid">
+    <div>
+      <h2 class="section__title" id="contact-title">{t.contact.title}</h2>
+      <p class="contact__lead">{t.contact.lead}</p>
+    </div>
+    <dl class="rows">
+      {
+        rows.map((row) => (
+          <div>
+            <dt>{row.label}</dt>
+            <dd>
+              <Value value={row.value} pendingLabel={t.pending} href={row.href} />
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>
+
+<style>
+  .contact {
+    --paper: #16212b;
+    --ink: #f4f2ec;
+    --muted: #a3adb5;
+    --line: #34424f;
+    --accent: #f4f2ec;
+
+    background: var(--paper);
+    color: var(--ink);
+    border-top: 0;
+  }
+
+  .contact__lead {
+    max-width: 20rem;
+    margin-top: 1rem;
+    color: var(--muted);
+  }
+
+  .contact dd {
+    font-size: 1.1rem;
+  }
+
+  .contact dd :global(a) {
+    text-underline-offset: 0.3em;
+  }
+</style>

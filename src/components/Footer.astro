@@ -1,0 +1,42 @@
+---
+import { site } from '../content/site';
+import type { Dictionary } from '../i18n';
+
+interface Props {
+  t: Dictionary;
+}
+
+const { t } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <span class="footer__brand">{site.name}</span>
+    <span>© {year} {site.name}. {t.footer.rights}</span>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: #16212b;
+    border-top: 1px solid #34424f;
+    color: #a3adb5;
+    font-size: 0.875rem;
+  }
+
+  .footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 2rem;
+    padding-block: 1.75rem;
+  }
+
+  .footer__brand {
+    color: #f4f2ec;
+    font-family: var(--serif);
+    font-size: 1.1rem;
+  }
+</style>

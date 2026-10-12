@@ -1,0 +1,47 @@
+---
+import Value from './Value.astro';
+import { site } from '../content/site';
+import type { Dictionary } from '../i18n';
+
+interface Props {
+  t: Dictionary;
+}
+
+const { t } = Astro.props;
+
+const facts = [
+  { label: t.about.facts.founded, value: site.foundedYear },
+  { label: t.about.facts.capacity, value: t.about.capacity },
+  { label: t.about.facts.location, value: t.about.location },
+];
+---
+
+<section class="section" id="about" aria-labelledby="about-title">
+  <div class="wrap section__grid">
+    <h2 class="section__title" id="about-title">{t.about.title}</h2>
+    <div class="about__body">
+      <div class="prose">
+        {t.about.text.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+      <dl class="rows">
+        {
+          facts.map((fact) => (
+            <div>
+              <dt>{fact.label}</dt>
+              <dd>
+                <Value value={fact.value} pendingLabel={t.pending} />
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about__body {
+    display: grid;
+    gap: 2.5rem;
+  }
+</style>

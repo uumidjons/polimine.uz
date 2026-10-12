@@ -1,0 +1,134 @@
+---
+import { site } from '../content/site';
+import { LOCALES, localePath, type Dictionary, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  t: Dictionary;
+}
+
+const { locale, t } = Astro.props;
+
+const links = [
+  { href: '#about', label: t.nav.about },
+  { href: '#products', label: t.nav.products },
+  { href: '#process', label: t.nav.process },
+  { href: '#terms', label: t.nav.terms },
+  { href: '#contact', label: t.nav.contact },
+];
+---
+
+<header class="header">
+  <div class="wrap header__inner">
+    <a class="header__brand" href={localePath(locale)}>{site.name}</a>
+
+    <nav class="header__nav" aria-label={t.nav.label}>
+      <ul>
+        {
+          links.map((link) => (
+            <li>
+              <a href={link.href}>{link.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <ul class="header__langs">
+      {
+        LOCALES.map((code) => (
+          <li>
+            <a
+              href={localePath(code)}
+              lang={code}
+              hreflang={code}
+              aria-current={code === locale ? 'true' : undefined}
+            >
+              {code.toUpperCase()}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    min-height: 4rem;
+  }
+
+  .header__brand {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+
+  .header__nav {
+    display: none;
+  }
+
+  .header__nav ul {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .header__nav a {
+    color: var(--muted);
+    font-size: 0.925rem;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .header__nav a:hover {
+    color: var(--ink);
+  }
+
+  .header__langs {
+    display: flex;
+    gap: 0.25rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+  }
+
+  .header__langs a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .header__langs a:hover {
+    color: var(--ink);
+  }
+
+  .header__langs a[aria-current] {
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.35em;
+  }
+
+  @media (min-width: 56rem) {
+    .header__nav {
+      display: block;
+    }
+  }
+</style>

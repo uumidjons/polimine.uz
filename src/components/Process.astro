@@ -1,0 +1,56 @@
+---
+import type { Dictionary } from '../i18n';
+
+interface Props {
+  t: Dictionary;
+}
+
+const { t } = Astro.props;
+---
+
+<section class="section" id="process" aria-labelledby="process-title">
+  <div class="wrap section__grid">
+    <h2 class="section__title" id="process-title">{t.process.title}</h2>
+    <ol class="steps">
+      {
+        t.process.steps.map((step, index) => (
+          <li class="step">
+            <span class="step__number" aria-hidden="true">
+              {String(index + 1).padStart(2, '0')}
+            </span>
+            <div>
+              <h3 class="step__title">{step.title}</h3>
+              <p class="muted">{step.text}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .step {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 1rem;
+    padding-block: 1.4rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .step:first-child {
+    border-top: 1px solid var(--line);
+  }
+
+  .step__number {
+    color: var(--accent);
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .step__title {
+    margin-bottom: 0.3rem;
+    font-size: 1.2rem;
+  }
+</style>

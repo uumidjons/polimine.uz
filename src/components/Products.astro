@@ -1,0 +1,149 @@
+---
+import Value from './Value.astro';
+import { GRADE_IDS, site } from '../content/site';
+import type { Dictionary } from '../i18n';
+
+interface Props {
+  t: Dictionary;
+}
+
+const { t } = Astro.props;
+const labels = t.products.specs;
+
+const grades = GRADE_IDS.map((id) => {
+  const text = t.products.grades[id];
+  const numbers = site.products[id];
+  return {
+    id,
+    name: text.name,
+    summary: text.summary,
+    specs: [
+      { label: labels.mfi, value: numbers.mfi },
+      { label: labels.density, value: numbers.density },
+      { label: labels.moisture, value: numbers.moisture },
+      { label: labels.color, value: text.color },
+      { label: labels.packaging, value: text.packaging },
+    ],
+  };
+});
+---
+
+<section class="section" id="products" aria-labelledby="products-title">
+  <div class="wrap">
+    <div class="section__grid products__head">
+      <h2 class="section__title" id="products-title">{t.products.title}</h2>
+      <p class="prose muted">{t.products.intro}</p>
+    </div>
+
+    <div class="products__list">
+      {
+        grades.map((grade, index) => (
+          <article class="product" aria-labelledby={`${grade.id}-title`}>
+            <p class="product__index" aria-hidden="true">
+              {index + 1}
+            </p>
+            <h3 class="product__name" id={`${grade.id}-title`}>
+              {grade.name}
+            </h3>
+            <p class="product__summary">{grade.summary}</p>
+            <table class="product__specs">
+              <tbody>
+                {grade.specs.map((spec) => (
+                  <tr>
+                    <th scope="row">{spec.label}</th>
+                    <td>
+                      <Value value={spec.value} pendingLabel={t.pending} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <a class="product__ask" href="#contact">
+              {t.products.ask} <span aria-hidden="true">→</span>
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .products__head {
+    margin-bottom: 3rem;
+  }
+
+  .products__list {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .product {
+    display: flex;
+    flex-direction: column;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--accent);
+  }
+
+  .product__index {
+    color: var(--line);
+    font-family: var(--serif);
+    font-size: 3.5rem;
+    line-height: 1;
+  }
+
+  .product__name {
+    margin-top: 1rem;
+    font-size: 1.6rem;
+  }
+
+  .product__summary {
+    margin-top: 0.5rem;
+    color: var(--muted);
+  }
+
+  .product__specs {
+    width: 100%;
+    margin-block: 1.75rem;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+
+  .product__specs th,
+  .product__specs td {
+    padding-block: 0.7rem;
+    border-top: 1px solid var(--line);
+    vertical-align: baseline;
+  }
+
+  .product__specs th {
+    padding-right: 1rem;
+    color: var(--muted);
+    font-weight: 400;
+    text-align: left;
+  }
+
+  .product__specs td {
+    text-align: right;
+  }
+
+  .product__ask {
+    margin-top: auto;
+    color: var(--accent);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .product__ask:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+  }
+
+  @media (min-width: 48rem) {
+    .products__list {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

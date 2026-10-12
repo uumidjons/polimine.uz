@@ -1,0 +1,20 @@
+---
+// Qiymat hali to'ldirilmagan bo'lsa, o'rniga "Aniqlanmoqda" yozuvini ko'rsatadi.
+interface Props {
+  value: string | null;
+  pendingLabel: string;
+  href?: string;
+}
+
+const { value, pendingLabel, href } = Astro.props;
+---
+
+{
+  value === null ? (
+    <span class="pending">{pendingLabel}</span>
+  ) : href ? (
+    <a href={href}>{value}</a>
+  ) : (
+    value
+  )
+}

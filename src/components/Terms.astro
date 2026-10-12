@@ -1,0 +1,28 @@
+---
+import Value from './Value.astro';
+import type { Dictionary } from '../i18n';
+
+interface Props {
+  t: Dictionary;
+}
+
+const { t } = Astro.props;
+---
+
+<section class="section" id="terms" aria-labelledby="terms-title">
+  <div class="wrap section__grid">
+    <h2 class="section__title" id="terms-title">{t.terms.title}</h2>
+    <dl class="rows">
+      {
+        t.terms.rows.map((row) => (
+          <div>
+            <dt>{row.label}</dt>
+            <dd>
+              <Value value={row.value} pendingLabel={t.pending} />
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>

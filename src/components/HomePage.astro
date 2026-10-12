@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import Hero from './Hero.astro';
+import About from './About.astro';
+import Products from './Products.astro';
+import Process from './Process.astro';
+import Terms from './Terms.astro';
+import Contact from './Contact.astro';
+import Footer from './Footer.astro';
+import { getDictionary, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getDictionary(locale);
+---
+
+<Base locale={locale}>
+  <Header locale={locale} t={t} />
+  <main>
+    <Hero t={t} />
+    <About t={t} />
+    <Products t={t} />
+    <Process t={t} />
+    <Terms t={t} />
+    <Contact t={t} />
+  </main>
+  <Footer t={t} />
+</Base>
